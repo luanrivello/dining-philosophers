@@ -1,6 +1,5 @@
 # Ceia de filósofos
 Problema dos Filósofos comensais/Ceia de filósofos (dining philosophers) desenvolvido em golang.  
-\
 ![Example](example1.gif)  
 \
 Nesse próximo exemplo  
