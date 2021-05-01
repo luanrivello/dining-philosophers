@@ -11,3 +11,7 @@ Exemplo 2:
 O filósofo 5 está comendo usando os hashi 5 e 1  
 O filósofo 4 está esperando o hashi 5 ficar disponível  
 O hashi 4 foi reservado pelo filósofo 4 
+\
+\
+Exemplo 3:  
+![Example](example3.gif)  
