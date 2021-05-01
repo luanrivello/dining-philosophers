@@ -1,5 +1,6 @@
 # Ceia de filósofos
-Problema dos Filósofos comensais/Ceia de filósofos (dining philosophers) desenvolvido em golang. Para a cadeira de sistema operacionais II. 
+Problema dos Filósofos comensais/Ceia de filósofos (dining philosophers) desenvolvido em golang.  
+Cadeira de sistema operacionais II.  
 \
 Exemplo 1:  
 ![Example](example1.gif)  
