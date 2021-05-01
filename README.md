@@ -1,12 +1,12 @@
 # Ceia de filósofos
-Problema dos Filósofos comensais/Ceia de filósofos (dining philosophers) desenvolvido em golang.  
+Problema dos Filósofos comensais/Ceia de filósofos (dining philosophers) desenvolvido em golang. Para a cadeira de sistema operacionais II. 
 \
-Exemplo:  
+Exemplo 1:  
 ![Example](example1.gif)  
 \
 \
-Nesse próximo exemplo  
+Exemplo 2:  
+![Example](example2.png)  
 O filósofo 5 está comendo usando os hashi 5 e 1  
 O filósofo 4 está esperando o hashi 5 ficar disponível  
-O hashi 4 foi reservado pelo filósofo 4  
-![Example](example2.png)  
+O hashi 4 foi reservado pelo filósofo 4 
