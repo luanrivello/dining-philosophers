@@ -71,14 +71,14 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 
 		switch state {
 		case 0:
-			if (!display && stateAnt != 0) {
+			if !display && stateAnt != 0 {
 				fmt.Printf("Filosofo %d: %sPensando%s\n", f.id, string(colorGreen), string(colorReset))
 			}
 
 			time.Sleep(time.Duration(rand.Intn(6)+4) * time.Second)
 
 		case 1:
-			if (!display) {
+			if !display {
 				fmt.Printf("Filosofo %d: %sCom fome%s\n", f.id, string(colorYellow), string(colorReset))
 			}
 
@@ -87,7 +87,7 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 				f.hashiEsq.disponivel = false
 				f.hashiDir.disponivel = false
 
-				if (!display) {
+				if !display {
 					fmt.Printf("Filosofo %d: %sComendo com hashis %d e %d%s\n", f.id, string(colorCyan), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
 				}
 
@@ -95,7 +95,7 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 
 				time.Sleep(time.Duration(rand.Intn(8)+2) * time.Second)
 
-				if (!display) {
+				if !display {
 					fmt.Printf("Filosofo %d: %sTerminou de comer. Liberando hashis %d e %d%s\n", f.id, string(colorPurple), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
 				}
 
@@ -106,7 +106,7 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 			} else {
 
 				//Esperando
-				if (!display) {
+				if !display {
 					fmt.Printf("Filosofo %d: %sEsperando para comer%s\n", f.id, string(colorYellow), string(colorReset))
 				}
 
@@ -134,7 +134,7 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 							f.hashiDir.reservado = 0
 						}
 
-						if (!display) {
+						if !display {
 							fmt.Printf("%sFilosofo %d: Morreu de fome%s\n", string(colorRed), f.id, string(colorReset))
 						}
 
@@ -148,7 +148,7 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 				f.hashiEsq.reservado = 0
 				f.hashiDir.reservado = 0
 
-				if (!display) {
+				if !display {
 					fmt.Printf("Filosofo %d: %sComendo com hashis %d e %d%s\n", f.id, string(colorCyan), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
 				}
 
@@ -156,7 +156,7 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 
 				time.Sleep(time.Duration(rand.Intn(8)+2) * time.Second)
 
-				if (!display) {
+				if !display {
 					fmt.Printf("Filosofo %d: %sTerminou de comer. Liberando hashis %d e %d%s\n", f.id, string(colorPurple), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
 				}
 
@@ -232,12 +232,12 @@ func main() {
 	//Total de filosofos
 	var total int
 	fmt.Print("\033[H\033[2J")
-	for{
+	for {
 		fmt.Print("Numero de filosofos: ")
 		fmt.Scanln(&total)
 		fmt.Print("\033[H\033[2J")
 
-		if(total > 0){
+		if total > 0 {
 			break
 		}
 
@@ -247,19 +247,19 @@ func main() {
 
 	//Tipo de display
 	var tipo int
-	for{
+	for {
 		fmt.Print("1- Dinamico\n2- Impresso\n\nTipo de display: ")
 		fmt.Scanln(&tipo)
 
-		if(tipo == 1 || tipo == 2){
+		if tipo == 1 || tipo == 2 {
 			break
 		}
-		
+
 		fmt.Print("\033[H\033[2J")
 		fmt.Printf("\n%s!Invalido!%s\n\n", colorRed, colorReset)
 	}
 
-	display = tipo==1 
+	display = tipo == 1
 
 	//Seed random
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -273,7 +273,7 @@ func main() {
 	//}
 
 	division := "-------------------------"
-	if(!display){
+	if !display {
 		fmt.Print("\033[H\033[2J")
 		fmt.Println(division, "Inicio", division)
 	}
@@ -285,7 +285,7 @@ func main() {
 	//Inicializar Filosofos
 	for _, f := range filosofos {
 
-		if(!display){
+		if !display {
 			fmt.Printf("Filosofo %d: %sPensando%s\n", f.id, colorGreen, colorReset)
 		}
 
@@ -294,7 +294,7 @@ func main() {
 	}
 
 	//Display
-	if(display){
+	if display {
 		for {
 			res := "\033[H\033[2J"
 			time.Sleep(500 * time.Millisecond)
@@ -344,7 +344,7 @@ func main() {
 			//Print de tudo
 			fmt.Println(res)
 
-			if(!checarFilosofos(filosofos)){
+			if !checarFilosofos(filosofos) {
 				break
 			}
 		}
@@ -352,7 +352,7 @@ func main() {
 
 	//Esperar threads terminarem
 	wg.Wait()
-	if(!display){
+	if !display {
 		fmt.Println(division, "Fim", division)
 	}
 }
