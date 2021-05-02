@@ -232,31 +232,27 @@ func main() {
 	//Total de filosofos
 	var total int
 	fmt.Print("\033[H\033[2J")
-	for {
+	fmt.Print("Numero de filosofos: ")
+	_, err := fmt.Scanln(&total)
+	fmt.Print("\033[H\033[2J")
+
+	for err != nil || total < 0 {
+		fmt.Printf("%s!Invalido!%s\n", colorRed, colorReset)
 		fmt.Print("Numero de filosofos: ")
-		fmt.Scanln(&total)
+		_, err = fmt.Scanln(&total)
 		fmt.Print("\033[H\033[2J")
-
-		if total > 0 {
-			break
-		}
-
-		fmt.Print("\033[H\033[2J")
-		fmt.Printf("\n%s!Invalido!%s\n\n", colorRed, colorReset)
 	}
 
 	//Tipo de display
 	var tipo int
-	for {
+	fmt.Print("1- Dinamico\n2- Impresso\n\nTipo de display: ")
+	_, err = fmt.Scanln(&tipo)
+
+	for err != nil || tipo != 1 && tipo != 2 {
+		fmt.Printf("%s!Invalido!%s\n", colorRed, colorReset)
 		fmt.Print("1- Dinamico\n2- Impresso\n\nTipo de display: ")
-		fmt.Scanln(&tipo)
-
-		if tipo == 1 || tipo == 2 {
-			break
-		}
-
+		_, err = fmt.Scanln(&tipo)
 		fmt.Print("\033[H\033[2J")
-		fmt.Printf("\n%s!Invalido!%s\n\n", colorRed, colorReset)
 	}
 
 	display = tipo == 1
