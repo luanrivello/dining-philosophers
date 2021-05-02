@@ -15,7 +15,9 @@ var colorGreen = "\033[32m"
 var colorYellow = "\033[33m"
 var colorPurple = "\033[35m"
 var colorCyan = "\033[36m"
-var display = true
+
+//tipo de display
+var display bool
 
 //Filosofo
 type Filosofo struct {
@@ -58,37 +60,45 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	//Iteracoes do filosofo
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 5; i++ {
 		time.Sleep(time.Duration(rand.Intn(3)+1) * time.Second)
 
 		//Estado aleatorio
 		state := rand.Intn(2)
 
-		//stateAnt := f.estado
+		stateAnt := f.estado
 		f.estado = state
 
 		switch state {
 		case 0:
-			//if stateAnt != 0 {
-			//fmt.Printf("Filosofo %d: %sPensando%s\n", f.id, string(colorGreen), string(colorReset))
-			//}
+			if (!display && stateAnt != 0) {
+				fmt.Printf("Filosofo %d: %sPensando%s\n", f.id, string(colorGreen), string(colorReset))
+			}
 
 			time.Sleep(time.Duration(rand.Intn(6)+4) * time.Second)
 
 		case 1:
-			//fmt.Printf("Filosofo %d: %sCom fome%s\n", f.id, string(colorYellow), string(colorReset))
+			if (!display) {
+				fmt.Printf("Filosofo %d: %sCom fome%s\n", f.id, string(colorYellow), string(colorReset))
+			}
 
 			if f.hashiEsq.disponivel && f.hashiDir.disponivel && f.hashiEsq.reservado != -1 && f.hashiDir.reservado != 1 {
 				//Comendo
 				f.hashiEsq.disponivel = false
 				f.hashiDir.disponivel = false
 
-				//fmt.Printf("Filosofo %d: %sComendo com hashis %d e %d%s\n", f.id, string(colorCyan), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				if (!display) {
+					fmt.Printf("Filosofo %d: %sComendo com hashis %d e %d%s\n", f.id, string(colorCyan), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				}
+
 				f.estado = 2
 
 				time.Sleep(time.Duration(rand.Intn(8)+2) * time.Second)
 
-				//fmt.Printf("Filosofo %d: %sTerminou de comer. Liberando hashis %d e %d%s\n", f.id, string(colorPurple), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				if (!display) {
+					fmt.Printf("Filosofo %d: %sTerminou de comer. Liberando hashis %d e %d%s\n", f.id, string(colorPurple), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				}
+
 				f.estado = 0
 
 				f.hashiEsq.disponivel = true
@@ -96,7 +106,9 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 			} else {
 
 				//Esperando
-				//fmt.Printf("Filosofo %d: %sEsperando para comer%s\n", f.id, string(colorYellow), string(colorReset))
+				if (!display) {
+					fmt.Printf("Filosofo %d: %sEsperando para comer%s\n", f.id, string(colorYellow), string(colorReset))
+				}
 
 				for i := 0; !f.hashiEsq.disponivel || !f.hashiDir.disponivel || f.hashiEsq.reservado == -1 || f.hashiDir.reservado == 1; i++ {
 
@@ -122,7 +134,10 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 							f.hashiDir.reservado = 0
 						}
 
-						//fmt.Printf("%sFilosofo %d: Morreu de fome%s\n", string(colorRed), f.id, string(colorReset))
+						if (!display) {
+							fmt.Printf("%sFilosofo %d: Morreu de fome%s\n", string(colorRed), f.id, string(colorReset))
+						}
+
 						return
 					}
 				}
@@ -133,17 +148,22 @@ func (f *Filosofo) comeca(wg *sync.WaitGroup) {
 				f.hashiEsq.reservado = 0
 				f.hashiDir.reservado = 0
 
-				//fmt.Printf("Filosofo %d: %sComendo com hashis %d e %d%s\n", f.id, string(colorCyan), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				if (!display) {
+					fmt.Printf("Filosofo %d: %sComendo com hashis %d e %d%s\n", f.id, string(colorCyan), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				}
+
 				f.estado = 2
 
 				time.Sleep(time.Duration(rand.Intn(8)+2) * time.Second)
 
-				//fmt.Printf("Filosofo %d: %sTerminou de comer. Liberando hashis %d e %d%s\n", f.id, string(colorPurple), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				if (!display) {
+					fmt.Printf("Filosofo %d: %sTerminou de comer. Liberando hashis %d e %d%s\n", f.id, string(colorPurple), f.hashiEsq.id, f.hashiDir.id, string(colorReset))
+				}
+
 				f.estado = 0
 
 				f.hashiEsq.disponivel = true
 				f.hashiDir.disponivel = true
-
 			}
 
 		default:
@@ -207,24 +227,56 @@ func checarFilosofos(filosofos []*Filosofo) bool {
 }
 
 func main() {
+
+	//Entradas
 	//Total de filosofos
 	var total int
-	fmt.Print("Numero de filosofos: ")
-	fmt.Scanln(&total)
+	fmt.Print("\033[H\033[2J")
+	for{
+		fmt.Print("Numero de filosofos: ")
+		fmt.Scanln(&total)
+		fmt.Print("\033[H\033[2J")
 
+		if(total > 0){
+			break
+		}
+
+		fmt.Print("\033[H\033[2J")
+		fmt.Printf("\n%s!Invalido!%s\n\n", colorRed, colorReset)
+	}
+
+	//Tipo de display
+	var tipo int
+	for{
+		fmt.Print("1- Dinamico\n2- Impresso\n\nTipo de display: ")
+		fmt.Scanln(&tipo)
+
+		if(tipo == 1 || tipo == 2){
+			break
+		}
+		
+		fmt.Print("\033[H\033[2J")
+		fmt.Printf("\n%s!Invalido!%s\n\n", colorRed, colorReset)
+	}
+
+	display = tipo==1 
+
+	//Seed random
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	//Criar Filosofos e Hashis
 	filosofos := initFilosofos(total)
 
-	//Print
+	//debug
 	//for _, f := range filosofos {
 	//	fmt.Println(f.String())
 	//}
 
-	//division := "-------------------------"
-	//fmt.Print("\033[H\033[2J")
-	//fmt.Println(division, "Inicio", division)
+	division := "-------------------------"
+	if(!display){
+		fmt.Print("\033[H\033[2J")
+		fmt.Println(division, "Inicio", division)
+	}
 
 	//Grupo thread
 	wg := new(sync.WaitGroup)
@@ -232,12 +284,17 @@ func main() {
 
 	//Inicializar Filosofos
 	for _, f := range filosofos {
-		//fmt.Printf("Filosofo %d: %sPensando%s\n", f.id, colorGreen, colorReset)
+
+		if(!display){
+			fmt.Printf("Filosofo %d: %sPensando%s\n", f.id, colorGreen, colorReset)
+		}
+
 		go f.comeca(wg)
+
 	}
 
 	//Display
-	if display {
+	if(display){
 		for {
 			res := "\033[H\033[2J"
 			time.Sleep(500 * time.Millisecond)
@@ -287,13 +344,15 @@ func main() {
 			//Print de tudo
 			fmt.Println(res)
 
-			if !checarFilosofos(filosofos) {
+			if(!checarFilosofos(filosofos)){
 				break
 			}
 		}
 	}
 
 	//Esperar threads terminarem
-	//fmt.Println(division, "Fim", division)
 	wg.Wait()
+	if(!display){
+		fmt.Println(division, "Fim", division)
+	}
 }
